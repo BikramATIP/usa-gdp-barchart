@@ -5,7 +5,7 @@ function App() {
 
   return (
     <>
-    
+    <h1>COVID-19 in the United States</h1>
     </>
   )
 }
