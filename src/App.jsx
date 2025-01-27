@@ -66,8 +66,16 @@ function App() {
   svg.append('g')
   .attr('transform', `translate(${margin.left}, 0)`)
   .call(yAxis)
+  
+  svg.selectAll('rect')
+  .data(dataSet)
+  .enter()
+  .append('rect')
+  .attr('x', d => xScale(d.date))
+  .attr('y', d => yScale(d.value))
+  .attr('width', (width - margin.left - margin.right) / dataSet.length)
+  .attr('height', d => height - margin.bottom - yScale(d.value))
 
-   console.log(dataSet)
 
 
   }, [data])
