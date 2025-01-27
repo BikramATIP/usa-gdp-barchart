@@ -21,7 +21,56 @@ function App() {
     fetchData();
     console.log(data)
   }, [])
+  
+  useEffect(() => {
+   if (!data) return;
 
+   const svg = d3.select(svgRef.current);
+  
+   const width = 800;
+   const height = 400;
+   const margin = { top: 40, right: 40, bottom: 60, left: 60};
+
+   const dataSet = data.data.map(d => {
+    return{
+      date: new Date(d[0]),
+      value: d[1]
+    }
+   })
+   
+   svg.attr('width', width)
+   .attr('height', height)
+   .style('outline', '1px solid black');
+
+   const xScale = d3.scaleTime()
+   .domain([d3.min(dataSet, d => d.date), d3.max(dataSet, d => d.date)])
+   .range([margin.left, width - margin.right]);
+
+   const yScale = d3.scaleLinear()
+   .domain([0, d3.max(dataSet, d => d.value)])
+   .range([height - margin.bottom, margin.top])
+   
+  const xAxis = d3.axisBottom(xScale)
+   .ticks(10)
+   .tickFormat(d3.timeFormat('%Y'));
+
+  const yAxis = d3.axisLeft(yScale)
+   .ticks(10)
+   .tickFormat(d3.format('0.2s'))
+
+   
+  svg.append('g')
+  .attr('transform', `translate(0, ${height - margin.bottom})`)
+  .call(xAxis)
+  
+  svg.append('g')
+  .attr('transform', `translate(${margin.left}, 0)`)
+  .call(yAxis)
+
+   console.log(dataSet)
+
+
+  }, [data])
 
 
    
