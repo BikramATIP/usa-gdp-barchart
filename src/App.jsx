@@ -58,13 +58,20 @@ function App() {
    .ticks(10)
    .tickFormat(d3.format('0.2s'))
 
+   const tooltip = d3.select('body')
+   .append('div')
+   .attr('class', 'tooltip')
+   .style('opacity', 0)
+
    
   svg.append('g')
   .attr('transform', `translate(0, ${height - margin.bottom})`)
+  .attr('id', 'x-axis')
   .call(xAxis)
   
   svg.append('g')
   .attr('transform', `translate(${margin.left}, 0)`)
+  .attr('id', 'y-axis')
   .call(yAxis)
   
   svg.selectAll('rect')
@@ -75,14 +82,42 @@ function App() {
   .attr('y', d => yScale(d.value))
   .attr('width', (width - margin.left - margin.right) / dataSet.length)
   .attr('height', d => height - margin.bottom - yScale(d.value))
+  .attr('class', 'bar')
+  .on('mouseover', (event, d) => {
+    const formattedDate = d.date.toLocaleDateString('en-US', {
+      month: 'long',
+      year: 'numeric'
+    });
+    tooltip
+    .style('opacity', 0.9)
+    .html(`${formattedDate}<br>${d3.format('$,.2f')(d.value)} Billion`)
+    .style('left', `${event.pageX + 10}px`)
+    .style('top', `${event.pageY - 28}px`)
+  })
+  .on('mouseout', () => {
+    tooltip.style('opacity', 0)
+  })
 
+  svg.append('text')
+  .attr('x', width / 2)
+  .attr('y', margin.top)
+  .attr('id', 'title')
+  .attr('text-anchor', 'middle')
+  .text('GDP in the United States')
+  .style('font-size', '1.5em');
+
+  svg.append('text')
+  .attr('x', margin.left)
+  .attr('y', height - margin.bottom / 2 - 120)
+  .attr('transform', 'rotate(-90, 40, 200)')
+  .attr('text-anchor', 'middle')
+  .style('font-size', '1.2em')
+  .text('GDP in Billion $')
 
 
   }, [data])
 
-
-   
-
+  
   return <>
    <svg ref={svgRef}></svg>
     </>

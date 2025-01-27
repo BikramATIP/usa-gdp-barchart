@@ -7,3 +7,12 @@ body {
     min-height: 100vh;
     background-color: #cae1f941;
 }
+.tooltip {
+    position: absolute;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 4px;
+    pointer-events: none;
+    font-size: 14px;
+}
