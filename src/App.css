@@ -1,1 +1,41 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #cae1f941;
+}
 
+root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    
+}
+.svg-container {
+    display: block;
+    margin: auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 5px rgb(0, 0, 0);
+    border-radius: 5px;
+}
+.bar:hover{
+    fill:rgb(5, 136, 250);;
+}
+.bar {
+    fill: rgb(104, 229, 104);
+}
+.tooltip {
+    position: absolute;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 4px;
+    pointer-events: none;
+    font-size: 14px;
+}
