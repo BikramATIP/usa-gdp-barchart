@@ -32,18 +32,21 @@ function App() {
    const margin = { top: 40, right: 40, bottom: 60, left: 60};
 
    const dataSet = data.data.map(d => {
-    return{
+    return {
       date: new Date(d[0]),
       value: d[1]
     }
-   })
+   });
    
    svg.attr('width', width)
    .attr('height', height)
    .style('outline', '1px solid black');
 
    const xScale = d3.scaleTime()
-   .domain([d3.min(dataSet, d => d.date), d3.max(dataSet, d => d.date)])
+   .domain([
+       d3.min(dataSet, d => d.date),
+       d3.max(dataSet, d => d.date)
+      ])
    .range([margin.left, width - margin.right]);
 
    const yScale = d3.scaleLinear()
@@ -55,8 +58,8 @@ function App() {
    .tickFormat(d3.timeFormat('%Y'));
 
   const yAxis = d3.axisLeft(yScale)
-   .ticks(10)
-   .tickFormat(d3.format('0.2s'))
+    .ticks(10) 
+    
 
    const tooltip = d3.select('body')
    .append('div')
@@ -72,7 +75,7 @@ function App() {
   svg.append('g')
   .attr('transform', `translate(${margin.left}, 0)`)
   .attr('id', 'y-axis')
-  .call(yAxis)
+  .call(yAxis);
   
   svg.selectAll('rect')
   .data(dataSet)
@@ -80,19 +83,20 @@ function App() {
   .append('rect')
   .attr('x', d => xScale(d.date))
   .attr('y', d => yScale(d.value))
-  .attr('width', (width - margin.left - margin.right) / dataSet.length)
   .attr('height', d => height - margin.bottom - yScale(d.value))
+  .attr('width', (width - margin.left - margin.right) / dataSet.length)
   .attr('class', 'bar')
+  .attr('data-date', d => d.date.toISOString().slice(0,10))
+  .attr('data-gdp', d => d.value)
   .on('mouseover', (event, d) => {
-    const formattedDate = d.date.toLocaleDateString('en-US', {
-      month: 'long',
-      year: 'numeric'
-    });
+    const formattedDate = d.date.toISOString().slice(0, 10);
     tooltip
     .style('opacity', 0.9)
     .html(`${formattedDate}<br>${d3.format('$,.2f')(d.value)} Billion`)
     .style('left', `${event.pageX + 10}px`)
     .style('top', `${event.pageY - 28}px`)
+    .attr('id', 'tooltip')
+    .attr('data-date', formattedDate)
   })
   .on('mouseout', () => {
     tooltip.style('opacity', 0)
@@ -114,12 +118,19 @@ function App() {
   .style('font-size', '1.2em')
   .text('GDP in Billion $')
 
+  svg.append('text')
+  .attr('x', width - margin.right)
+  .attr('y', height - margin.bottom + 40)
+  .attr('text-anchor', 'end')
+  .style('font-size', '0.8em')
+  .text('More Information: http://www.bea.gov/national/pdf/nipaguid.pdf')
+
 
   }, [data])
 
   
   return <>
-   <svg ref={svgRef}></svg>
+   <svg className="svg-main" ref={svgRef}></svg>
     </>
 }
 

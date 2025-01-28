@@ -5,7 +5,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #cae1f941;
+    background-color: #8fc0f441;
 }
 .tooltip {
     position: absolute;
@@ -16,3 +16,11 @@ body {
     pointer-events: none;
     font-size: 14px;
 }
+.bar {
+  fill: steelblue;
+}
+.svg-main {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  background-color: white;
+}
+
